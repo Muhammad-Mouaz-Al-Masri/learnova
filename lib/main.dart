@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:learnova/screens/start/Welcome_Screens.dart';
 import 'package:learnova/screens/start/splash_screen.dart';
+import 'package:learnova/theme/theme.dart';
 import 'package:lottie/lottie.dart';
 
 void main() {
-  runApp(MaterialApp(home: Scaffold(body: SplashScreen())));
+  runApp(
+    MaterialApp(
+      home: Scaffold(body: SplashScreen()),
+      theme: AppTheme.lightTheme,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
