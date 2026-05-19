@@ -39,6 +39,11 @@ dependencies:
   introduction_screen: ^4.0.0
   audioplayers: ^6.6.0
   media_query_preview: ^0.1.0
+  crop_your_image: ^2.0.0
+  image_picker: ^1.2.2
+  provider: ^6.1.5+1
+  google_generative_ai: ^0.4.7
+  flutter_markdown_plus: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +77,8 @@ flutter:
     - assets/logo.png
     - assets/3.png
     - assets/audio/WelcomingAudio.wav
+    - assets/images/mobile.png
+    - assets/images/chooseProfile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+
+// نموذج بسيط للرسالة
+class ChatMessage {
+  final String text;
+  final bool isUser;
+  ChatMessage({required this.text, required this.isUser});
+}
+
+class AIState extends ChangeNotifier {
+  List<ChatMessage> messages = [];
+  bool isLoading = false;
+
+  final model = GenerativeModel(
+    model: 'gemini-1.5-flash', // تأكد من استخدام موديل متاح
+    apiKey: 'YOUR_API_KEY',
+ systemInstruction: Content.system('''
+أنت "مساعد دراستي" - مساعد ذكي متخصص حصرياً في:
+• شرح الدروس والمفاهيم الدراسية
+• مساعدة في حل الواجبات والتمارين
+• التخطيط للمذاكرة وإدارة الوقت
+• توجيه في اختيار المواد والمصادر التعليمية
+
+قواعد صارمة:
+1. لا تجيب أبداً على أسئلة خارج نطاق الدراسة
+2. إذا سُئلت عن الطقس، الأخبار، الطبخ، الرياضة... إلخ - رفض بأدب
+3. لا تقدم معلومات شخصية أو طبية أو قانونية
+4. كن مشجعاً ومحفزاً دائماً
+
+رد الرفض:
+" اعتذر هن الاجابة أنا مساعد دراستك الخاص! 😊 أستطيع مساعدتك في دراستك فقط. هل لديك سؤال عن مادة معينة؟"
+'''),  );
+
+  Future<void> sendMessage(String question) async {
+    if (question.isEmpty) return;
+
+    // إضافة رسالة المستخدم
+    messages.add(ChatMessage(text: question, isUser: true));
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await model.generateContent([Content.text(question)]);
+      messages.add(ChatMessage(text: response.text ?? 'حدث خطأ', isUser: false));
+    } catch (e) {
+      messages.add(ChatMessage(text: 'عذراً، حدث خطأ تقني.', isUser: false));
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+}

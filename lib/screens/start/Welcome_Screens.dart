@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:learnova/main.dart';
+import 'package:learnova/screens/Authentication/sign_up.dart';
+import 'package:learnova/statemangment/signup_state.dart';
 import 'package:learnova/theme/theme.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class WelcomeScreens extends StatelessWidget {
@@ -13,10 +17,23 @@ class WelcomeScreens extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
 
     return IntroductionScreen(
+      onSkip: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+            create: (_) => SignupState(),
+            child: SignUp(),
+          ),
+        ),
+      ),
+      skip: Text('skip'),
       bodyPadding: EdgeInsets.only(top: height / 3.5),
-      showSkipButton: false,
+      showSkipButton: true,
       showNextButton: false,
       showDoneButton: false,
+      onDone: () {}, // ✅ مطلوب حتى لو كان showDoneButton: false
+      done: const Text(''), // ✅ مطلوب حتى لو كان مخفيًا
+
       pages: [
         PageViewModel(
           titleWidget: Shimmer.fromColors(
